@@ -3,6 +3,10 @@
 /******************************** 
 	 DATABASE & FUNCTIONS 
 ********************************/
+
+error_reporting(E_ALL);
+ini_set('display_errors','true');
+
 require('config/config.php');
 require('model/functions.fn.php');
 
@@ -17,7 +21,7 @@ if(isset($_POST['email']) && isset($_POST['password'])){
 		// TODO
 
 		// Force user connection to access dashboard
-		userConnection($db, 'git@initiation.com', 'password');
+		userConnection($db, $_POST['email'], $_POST['password']);
 		
 		header('Location: dashboard.php');
 
