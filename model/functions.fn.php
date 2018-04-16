@@ -266,7 +266,31 @@ SUMMARY
 		else{
 			return false;
 		}
+	}
+
+	function verify_mdp(&$mdp){
+		if (!empty($mdp)){
+			if (strlen($mdp) >= 6){
+				return true;
+			}else{
+				return 'Votre mot de passe doit contenir au moins 6 caractères';
+			}
+		}else{
+			return 'Mot de passe vide';
+		}
 	}	
+	
+	function verify_mail(&$mail){
+		if (!empty($mail)){
+			if (filter_var($mail,FILTER_VALIDATE_EMAIL)){
+				return true;
+			}else{
+				return 'L\'adresse email a une syntaxe incorrecte';
+			}
+		}else{
+			return 'Adresse email vide';
+		}
+	}
 
 	/*2.1!updateProfilPicture*/
 	function updateProfilPicture(PDO $db, $pic, $user_id){

@@ -22,8 +22,18 @@
 						</span>
 					</div>
 					<div class="form-input">
+						<span class="email">
+							<input type="text" name="email1" placeholder="Confirmer email">
+						</span>
+					</div>
+					<div class="form-input">
 						<span class="password">
 							<input type="password" name="password" placeholder="Password">
+						</span>
+					</div>
+					<div class="form-input">
+						<span class="password">
+							<input type="password" name="password1" placeholder="Confirmer password">
 						</span>
 					</div>
 
