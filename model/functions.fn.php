@@ -36,16 +36,17 @@ SUMMARY
 				  username = :username,
 				  email = :email,
 				  password = :password";
-
+				  
+		$password =  password_hash($password,PASSWORD_BCRYPT,[
+			'cost' => 11
+		]);
 
 		$req = $db->prepare($sql);
 		$req->execute(array(
-			':username' => $username,
-			':email' => $email,
-			':password' => $password,
+			'username' => $username,
+			'email' => $email,
+			'password' => $password,
 		));
-		
-
 	}
 
 
@@ -60,25 +61,24 @@ SUMMARY
 	function userConnection(PDO $db, $email, $password){
 		if(!empty($email) && !empty($password)){
 			//Requête SQL
-			$sql = "SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1";
+			$sql = "SELECT * FROM users WHERE email = :email LIMIT 1";
 
 			$req = $db->prepare($sql);
 			$req->execute(array(
-				':email' => $email,
-				':password' => $password
+				'email' => $email
 			));
 
-			$result = $req->fetch(PDO::FETCH_ASSOC);
+			$result = $req->fetchAll(PDO::FETCH_ASSOC);
 
 			//Si le fetch réussi, alors un résultat a été retourné donc le couple email / password est correct
-			if($result == true){
+			if(count($result) == 1 and password_verify($password,$result[0]['password']) === true){
 				
 				//on définit la SESSION
-				$_SESSION['id'] = $result['id'];
-				$_SESSION['username'] = $result['username'];
-				$_SESSION['email'] = $result['email'];
-				$_SESSION['created_at'] = $result['created_at'];
-				$_SESSION['image'] = $result['picture'];
+				$_SESSION['id'] = $result[0]['id'];
+				$_SESSION['username'] = $result[0]['username'];
+				$_SESSION['email'] = $result[0]['email'];
+				$_SESSION['created_at'] = $result[0]['created_at'];
+				$_SESSION['image'] = $result[0]['picture'];
 
 				return true;
 			}else{
