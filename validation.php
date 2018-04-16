@@ -15,7 +15,11 @@ if(	isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
     if (isUsernameAvailable($db,$username) && isEmailAvailable($db,$email)){
 
         userRegistration($db,$username, $email, $password);
-        header('Location: login.php');
+
+        userConnection($db, $email, $password);
+        header('Location: dashboard.php');
+
+
 
     }elseif(!isEmailAvailable($db,$email)){
 
