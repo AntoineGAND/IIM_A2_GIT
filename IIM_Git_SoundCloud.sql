@@ -52,17 +52,10 @@ CREATE TABLE `users` (
   `id` int(11) UNSIGNED NOT NULL,
   `username` varchar(20) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` mediumtext(100) NOT NULL COMMENT 'encrypted passwords are better',
+  `password` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci,
   `picture` varchar(255) NULL COMMENT 'name of profile picture',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `users`
---
-
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `picture`, `created_at`) VALUES
-(1, 'Git', 'git@initiation.com', 'password', 'view/profil_pic/e8df43b8a90546b15da8591c89711879.1.jpg', '2015-10-01 11:13:46');
 
 --
 -- Index pour les tables exportées
