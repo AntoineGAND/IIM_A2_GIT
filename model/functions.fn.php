@@ -1,4 +1,9 @@
 <?php 
+
+	spl_autoload_register(function($class){
+		require_once 'class/'.$class.'.php';
+	});
+
 /*******************************************************************
 SUMMARY
 	1!FUNCTIONS
@@ -19,35 +24,6 @@ SUMMARY
 /**************************************************
 					1!FUNCTIONS
 **************************************************/
-		
-
-	/*1.1!userRegistration
-		return :
-			true for registration OK
-			false for fail
-		$db -> 				database object
-		$username -> 		field value : username
-		$email -> 			field value : email
-		$password -> 		field value : password
-	*/
-	function userRegistration(PDO $db, $username, $email, $password){
-		$sql = "INSERT INTO users
-				  SET
-				  username = :username,
-				  email = :email,
-				  password = :password";
-				  
-		$password =  password_hash($password,PASSWORD_BCRYPT,[
-			'cost' => 11
-		]);
-
-		$req = $db->prepare($sql);
-		$req->execute(array(
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
-		));
-	}
 
 
 	/*1.2!userConnection
@@ -309,3 +285,7 @@ SUMMARY
 			':id' => $user_id
 		));
 	}
+
+	
+	
+	
