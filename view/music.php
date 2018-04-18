@@ -69,6 +69,7 @@
 
                                     <div class="forme-input">
                                         <input type="submit" value="Envoyer">
+                                        <input type="hidden" value="<?php echo $music['id'] ?>">
                                     </div>
                                     </div>
 
