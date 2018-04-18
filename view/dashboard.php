@@ -31,7 +31,7 @@
 										<ul class="list-inline actionicon">
 
 										<?php
-                                            echo '<li><span class="badge badge-primary">Like</span></li>';
+                                        echo '<li><span class="badge badge-primary">Like</span></li>';
                                         if($music['user_id'] == $_SESSION['id']){
 											echo '<li><a href="edit.php?id='.$music['id'].'&&user_id='.$music['user_id'].'"><i class="fa fa-pencil"></i></a></li>';
 											echo '<li><a href="delete.php?id='.$music['id'].'"><i class="fa fa-times"></i></a></li>';
@@ -39,9 +39,11 @@
 										</ul>
 									</div>
 									<b class="username">Posté par <?php echo $music['username']; ?></b>
-									<h3 class="title">
+                                    <a href="<?php echo "music.php?id=".$music['id'];?>">
+                                    <h3 class="title">
 										<?php echo $music['title']; ?>
 									</h3>
+                                    </a>
 									<p class="clearfix">
 										<small class="date pull-right"><i class="fa fa-clock-o"></i> <?php echo $music['created_at']; ?></small>
 									</p>
