@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div id="musicfeed">
-                <h1><i class="fa fa-clock-o"></i> MUSIC NAME </h1>
+                <?php foreach($musics as $music){ ?>
+                <h1><?php echo $music['title']; ?> </h1>
                     <div class="music animated fadeInDown" data-src="<?php echo $music['file']; ?>">
                         <div class="row">
                             <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
@@ -80,6 +81,7 @@
 
                         </div>
                         </div>
+                <?php } ?>
                     </div>
             </div>
         </div>
