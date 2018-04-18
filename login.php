@@ -15,16 +15,11 @@ require('model/functions.fn.php');
 			PROCESS
 ********************************/
 
-if(isset($_POST['email']) && isset($_POST['password'])){
-	if(!empty($_POST['email']) && !empty($_POST['password'])){
-		
-		if(userConnection($db, $_POST['email'], $_POST['password']) === true){
-			header('Location: dashboard.php');
-		}else{
-			$error = "Mauvais identifiants";
-		}
-	}else{
-		$error = 'Champs requis !';
+if(Verify::post(['email' => 'string','password'=> 'string'])){
+	$error = User::login(['email' => $_POST['email']],$_POST['password']);
+	
+	if (!is_string($error)){
+		header('Location: dashboard.php');
 	}
 }
 

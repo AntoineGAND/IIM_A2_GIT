@@ -75,6 +75,7 @@ class BDD extends CONFIG{
                 BDD::$pdo = new PDO('mysql:host='.self::BDD_CONNECT['host'].';dbname='.self::BDD_CONNECT['dbname'].';charset='.self::BDD_CONNECT['charset'], self::BDD_CONNECT['login'], self::BDD_CONNECT['password'],array(PDO::ATTR_PERSISTENT  => true,PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true));
             }catch(Exception $e){
                 var_dump($e);
+				die('');
             }
         }
 
@@ -102,6 +103,7 @@ class BDD extends CONFIG{
             $req = self::getPDO()->query($sql);
 
             if (!$req){
+				die($sql);
 				return null;
 			}
             
