@@ -10,7 +10,20 @@
                         <div class="row">
                             <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
                                 <div class="author">
-
+                                    <?php
+                                    $sql = "SELECT picture FROM users WHERE id = :id LIMIT 1";
+                                    $req = $db->prepare($sql);
+                                    $req->execute(array(
+                                        ':id' => $music['user_id']
+                                    ));
+                                    $result = $req->fetch(PDO::FETCH_ASSOC);
+                                    if(!empty($result)){
+                                        echo '<img class="" src="'.$result['picture'].'" alt="">';
+                                    }
+                                    else{
+                                        echo '<img src="view/profil_pic/undefined.jpg" alt=""></a>';
+                                    }
+                                    ?>
 
                                 </div>
                             </div>
@@ -45,6 +58,22 @@
                                     <li class="list-group-item">Dapibus ac facilisis in</li>
                                     <li class="list-group-item">Vestibulum at eros</li>
                                 </ul>
+
+                                <form method="POST" action="music.php">
+                                    <div align="center">
+                                    <div class="form-input">
+                                        <span class="text-field">
+                                            <input type="text" name="text_field" placeholder="Ecrivez votre commentaire">
+                                        </span>
+                                    </div>
+
+                                    <div class="forme-input">
+                                        <input type="submit" value="Envoyer">
+                                    </div>
+                                    </div>
+
+                                    <p class="account">Vous n'avez pas de compte ? <a href="register.php">Inscrivez vous !</a></p>
+                                </form>
                             </div>
 
 
