@@ -19,10 +19,10 @@ class USER{
 		if (is_string($verify)){
 			return $verify;
 		}
-		if (count(self::getUser(['email' => $email])) > 0){
+		if (count(self::get(['email' => $email])) > 0){
 			return 'Votre adresse email n\'est pas disponible.';
 		}
-		if (count(self::getUser(['username' => $username])) > 0){
+		if (count(self::get(['username' => $username])) > 0){
 			return 'Votre username n\'est pas disponible.';
 		}
 		
@@ -61,13 +61,13 @@ class USER{
 		$id = SESSION::getUserID();
 		
 		if (!is_null($id)){
-			$url = 'users/avatars/'.$id.'.png';
+			$url = 'files/avatars/'.$id.'.png';
 			
 			if (file_exists(Dir::getParent().$url)){
 				unlink(Dir::getParent().$url);
 			}
 			
-			Dir::create('/users/avatars/');
+			Dir::create('/files/avatars/');
 			
 			imagepng($image,Dir::getParent().$url);
 			
@@ -79,13 +79,13 @@ class USER{
 	
 	public static function getAvatar($id){
 		
-		$url = 'users/avatars/'.$id.'.png';
+		$url = 'files/avatars/'.$id.'.png';
 		
 		if (file_exists(Dir::getParent().$url)){
 			return $url;
 		}
 		
-		return null;
+		return 'view/profil_pic/undefined.jpg';
 	}
 	
 	public static function login($array = null,$password = null){
@@ -99,7 +99,7 @@ class USER{
 			return $verify;
 		}
 		
-		$user = self::getUser($array);
+		$user = self::get($array);
 		if (count($user) > 0){
 			if (password_verify($password,$user['password']) === true){				
 				SESSION::setUserID($user['id']);
@@ -113,7 +113,7 @@ class USER{
 		}
 	}
 	
-	public static function getUser($array){
+	public static function get($array){
 		$where = [];
 		
 		if (array_key_exists('id',$array)){
@@ -131,6 +131,8 @@ class USER{
 			
 			if (count($req) > 0){
 				$req = $req[0];
+				
+				$req['avatar'] = self::getAvatar($req['id']);
 			}
 			
 			return $req;

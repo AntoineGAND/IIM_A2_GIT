@@ -1,5 +1,7 @@
 config/config.php
 class/CONFIG.php
+node_modules/
+files/
 musics
 .idea
 .DS_Store

@@ -12,7 +12,8 @@ require('model/functions.fn.php');
 	exit();
 }
 
-$musics = listMusics($db);
+$musics = MUSIC::GetList();
+
 
 include 'view/_header.php';
 include 'view/dashboard.php';

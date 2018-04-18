@@ -3,24 +3,18 @@ session_start();
 require('config/config.php');
 require('model/functions.fn.php');
 
-if( isset($_FILES['music']) && !empty($_FILES['music']) && 
-	isset($_POST['title']) && !empty($_POST['title'])){
-	
-	$file = $_FILES['music'];
+if( Verify::post(['title' => 'string']) and Verify::files(['music' => ''])){
 
-	// Si le "fichier" reçu est bien un fichier
-		$ext = strtolower(substr(strrchr($file['name'], '.')  ,1));
-		// Vérification des extentions
-		if (preg_match('/\.(mp3|ogg)$/i', $file['name'])) {
-			$filename = md5(uniqid(rand(), true));
-			$destination = "musics/{$filename}.{$_SESSION['id']}.{$ext}";
+	$ext = strtolower(substr(strrchr($_FILES['music']['name'], '.')  ,1));
 
-			// TODO
-
-		} else {
-			$error = 'Erreur, le fichier n\'a pas une extension autorisée !';
+	if (preg_match('/\.(mp3|ogg)$/i', $_FILES['music']['name'])) {
+		$verify = MUSIC::add($_FILES['music']['tmp_name'],$_POST['title']);
+		if (is_string($verify)){
+			$error = $verify;
 		}
-	// }
+	}else{
+		$error = 'Erreur, le fichier n\'a pas une extension autorisée !';
+	}
 }
 
 include 'view/_header.php';
