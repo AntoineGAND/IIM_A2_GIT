@@ -65,11 +65,10 @@
 					$file = $file.$split[$i].'/';
 
 					if (!file_exists($file)){
+						
+						echo $file;
+						
 						mkdir($file);
-					}
-
-					if (!file_exists($file.'index.php')){
-						copy(self::getUrl(self::INDEX_FOLDER_URL),$file.'index.php');
 					}
 				}
 
@@ -177,6 +176,6 @@
 		}  
 		
 		static public function getParent(){
-			return str_repeat('../',(mb_substr_count($_SERVER['PHP_SELF'],'/') - 1));
+			return str_repeat('../',(mb_substr_count($_SERVER['PHP_SELF'],'/') - 1)).'IIM_A2_GIT/';
 		}
 	}

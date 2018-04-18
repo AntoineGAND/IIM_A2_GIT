@@ -31,10 +31,60 @@ class USER{
 			return $verify;
 		}
 		
-		$password =  Transform::password($password);
+		$password = Transform::password($password);
 		
 		BDD::query('insert into `users` (`username`,`email`,`pasword`) value("'.Transform::mysqlString($username).'","'.Transform::mysqlString($email).'","'.Transform::mysqlString($password).'")');
 	
+		return null;
+	}
+	
+	public static function JSON($data = null){
+		$return = [];
+		
+		if (array_key_exists('username',$data)){
+			$return['username'] = $data['username'];
+		}
+		if (array_key_exists('email',$data)){
+			$return['email'] = $data['email'];
+		}
+		if (array_key_exists('id',$data)){
+			$return['id'] = $data['id'];
+			$return['avatar'] = self::getAvatar($data['id']);
+		}
+		
+		return $return;
+	}
+	
+	public static function setAvatar($tmp = null){
+		$image = imagecreatefromstring(file_get_contents($tmp));
+		
+		$id = SESSION::getUserID();
+		
+		if (!is_null($id)){
+			$url = 'users/avatars/'.$id.'.png';
+			
+			if (file_exists(Dir::getParent().$url)){
+				unlink(Dir::getParent().$url);
+			}
+			
+			Dir::create('/users/avatars/');
+			
+			imagepng($image,Dir::getParent().$url);
+			
+			return null;
+		}else{
+			return 'Vos n\'etes pas connecté';
+		}
+	}
+	
+	public static function getAvatar($id){
+		
+		$url = 'users/avatars/'.$id.'.png';
+		
+		if (file_exists(Dir::getParent().$url)){
+			return $url;
+		}
+		
 		return null;
 	}
 	
@@ -51,12 +101,8 @@ class USER{
 		
 		$user = self::getUser($array);
 		if (count($user) > 0){
-			if (password_verify($password,$user['password']) === true){
-				$_SESSION['id'] = $user['id'];
-				$_SESSION['username'] = $user['username'];
-				$_SESSION['email'] = $user['email'];
-				$_SESSION['created_at'] = $user['created_at'];
-				$_SESSION['image'] = $user['picture'];
+			if (password_verify($password,$user['password']) === true){				
+				SESSION::setUserID($user['id']);
 				
 				return null;
 			}else{

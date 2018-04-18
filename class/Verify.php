@@ -66,20 +66,20 @@ class Verify{
         return true;
     }
 
-    static public function files($verify = [],$hideLog = []){
-        $return = self::request($_FILES,$verify,$hideLog);
+    static public function files($verify = []){
+        $return = self::request($_FILES,$verify);
 
         return $return;
     }
 
-	static public function post($verify = [],$hideLog = []){
-        $return = self::request($_POST,$verify,$hideLog);
+	static public function post($verify = []){
+        $return = self::request($_POST,$verify);
 
         return $return;
 	}
 
-    static public function get($verify = [],$hideLog = []){
-        $return = self::request($_GET,$verify,$hideLog);
+    static public function get($verify = []){
+        $return = self::request($_GET,$verify);
 
         return $return;
     }
