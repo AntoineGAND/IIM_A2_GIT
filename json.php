@@ -7,12 +7,10 @@
 	if (Verify::get(['get' => 'string'])){
 		$get = explode(',',$_GET['get']);
 		
-		var_dump($get);
-		
-		$i = 0;
-		$max = count($get);
-		while($i < $max){
-			if (trim($get[$i]) == 'users'){
+		$o = 0;
+		$maxGet = count($get);
+		while($o < $maxGet){
+			if (trim($get[$o]) == 'users'){
 				$array = [];
 				
 				if (Verify::get(['email' => 'string'])){
@@ -41,7 +39,7 @@
 						$i++;
 					}
 				}
-			}elseif (trim($get[$i]) == 'musics'){				
+			}elseif (trim($get[$o]) == 'musics'){				
 				if (Verify::get(['id_music' => 'int'])){
 					$data['musics'] = MUSIC::json(MUSIC::get($_GET['id']));
 				}else{
@@ -60,7 +58,7 @@
 				}
 			}
 			
-			$i++;
+			$o++;
 		}
 	}
 	
