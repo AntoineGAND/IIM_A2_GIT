@@ -112,31 +112,24 @@ class USER{
 		}
 	}
 	
-	public static function get($array){
-		$where = [];
+	public static function getList(){
+		$return = [];
 		
-		if (array_key_exists('id',$array)){
-			$where[] = '`id`='.$array['id'];
-		}
-		if (array_key_exists('email',$array)){
-			$where[] = '`email`="'.Transform::mysqlString($array['email']).'"';
-		}
-		if (array_key_exists('username',$array)){
-			$where[] = '`username`="'.Transform::mysqlString($array['username']).'"';
+		$req = BDD::query('select * from `users` limit 30',true);
+
+		$i = 0;
+		$max = count($req);
+		while($i < $max){
+			$return[] = [
+				'avatar' =>  self::getAvatar($req[$i]['id']),
+				'username' =>  $req[$i]['username'],
+				'email' =>  $req[$i]['email'],
+				'id' =>  $req[$i]['id'],
+			];
+			
+			$i++;
 		}
 		
-		if (count($where) > 0){
-			$req = BDD::query('select * from `users` where '.join(' and ',$where).' limit 1',true);
-			
-			if (count($req) > 0){
-				$req = $req[0];
-				
-				$req['avatar'] = self::getAvatar($req['id']);
-			}
-			
-			return $req;
-		}else{
-			return [];
-		}
+		return $return;
 	}
 }

@@ -7,60 +7,57 @@
 	if (Verify::get(['get' => 'string'])){
 		$get = explode(',',$_GET['get']);
 		
+		var_dump($get);
+		
 		$i = 0;
 		$max = count($get);
 		while($i < $max){
-			switch(trim($get[$i])){
-				case 'users':
-					$array = [];
+			if (trim($get[$i]) == 'users'){
+				$array = [];
+				
+				if (Verify::get(['email' => 'string'])){
+					$array['email'] = $_GET['email'];
+				}
+				if (Verify::get(['id_user' => 'int'])){
+					$array['id'] = $_GET['id_user'];
+				}
+				if (Verify::get(['username' => 'string'])){
+					$array['username'] = $_GET['username'];
+				}
+				
+				if (count($array) > 0){
+					$data['users'] = User::json(User::get($array));
+				}else{
+					$data['users'] = [];
 					
-					if (Verify::get(['email' => 'string'])){
-						$array['email'] = $_GET['email'];
-					}
-					if (Verify::get(['id_user' => 'int'])){
-						$array['id'] = $_GET['id_user'];
-					}
-					if (Verify::get(['username' => 'string'])){
-						$array['username'] = $_GET['username'];
-					}
+					$users = User::getList();
 					
-					if (count($array) > 0){
-						$data = User::json(User::get($array));
-					}else{
-						$data = [];
+					$i=0;
+					$max = count($users);
+					while($i < $max){
 						
-						$users = User::getList();
+						$data['users'][] = User::json($users[$i]);
 						
-						$i=0;
-						$max = count($users);
-						while($i < $max){
-							
-							$data[] = User::json($users[$i]);
-							
-							$i++;
-						}
+						$i++;
 					}
-				break;
-				case 'musics':
-					$array = [];
+				}
+			}elseif (trim($get[$i]) == 'musics'){				
+				if (Verify::get(['id_music' => 'int'])){
+					$data['musics'] = MUSIC::json(MUSIC::get($_GET['id']));
+				}else{
+					$data['musics'] = [];
 					
-					if (Verify::get(['id_music' => 'int'])){
-						$data = MUSIC::json(MUSIC::get($_GET['id']));
-					}else{
-						$data = [];
+					$users = MUSIC::getList();
+					
+					$i=0;
+					$max = count($users);
+					while($i < $max){
 						
-						$users = MUSIC::getList();
+						$data['musics'][] = MUSIC::json($users[$i]);
 						
-						$i=0;
-						$max = count($users);
-						while($i < $max){
-							
-							$data[] = MUSIC::json($users[$i]);
-							
-							$i++;
-						}
+						$i++;
 					}
-				break;
+				}
 			}
 			
 			$i++;

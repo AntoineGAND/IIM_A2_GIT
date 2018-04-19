@@ -222,14 +222,13 @@
 						$i++;
 					}
 					
-					$req = BDD::query('select `musics_comment`.`id_music`,`musics_comment`.`id_user`,`musics_comment`.`comment`,`musics_comment`.`time`,`users`.`id` as `id_user`,`users`.`username`,`users`.`email` from `musics_comment` left join `users` on `users`.`id`=`musics_comment`.`id_user` where '.BDD::getOperation('id_music','=',$id).' order by `time` desc limit 30',true);
+					$req = BDD::query('select `musics_like`.`id_music`,`musics_like`.`id_user`,`musics_like`.`time`,`musics_like`.`id_user`,`users`.`username`,`users`.`email` from `musics_like` left join `users` on `users`.`id`=`musics_like`.`id_user` where '.BDD::getOperation('id_music','=',$id).' order by `time` desc limit 30',true);
 					
 					$i = 0;
 					$max = count($req);
 					while($i < $max){
 						$return[$req[$i]['id_music']][] = [
 							'time' => $req[$i]['time'],
-							'comment' => $req[$i]['comment'],
 							'user' => [
 								'username' => $req[$i]['username'],
 								'email' => $req[$i]['email'],
@@ -419,6 +418,7 @@
 				],
 				'likes' => [
 					'count' => $array['nbr-likes'],	
+					'data' => $array['likes'],	
 				]
 			];
 		}
