@@ -1,16 +1,13 @@
+
+<?php include 'includes/header.php'; ?>
 <body style="background-color: #333;">
+
 	<section id="login-container">
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 midway-horizontal midway-vertical fadeInDown animated">
 			<div id="logbox" class="register">
 				<h1><i class="fa fa-soundcloud"></i> Inscrivez-vous !</h1>
-				<?php if(isset($_SESSION['message']) && !empty($_SESSION['message'])){ ?>
-				<div class="alert alert-danger alert-dismissable">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<?php echo $_SESSION['message']; ?>
-					<?php unset($_SESSION['message']); ?>
-				</div>
-				<?php } ?>
-				<form method="POST" action="validation.php">
+				<?php include 'includes/alert.php'; ?>
+				<form method="POST" action="request/users/add.php">
 					<div class="form-input">
 						<span class="username">
 							<input type="text" name="username" placeholder="Username">
@@ -47,3 +44,4 @@
 			</div>
 		</div>
 	</section>
+	<?php include 'includes/footer.php'; ?>

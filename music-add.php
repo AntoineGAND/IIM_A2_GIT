@@ -1,10 +1,11 @@
 <?php
+
 	spl_autoload_register(function($class){
 		require_once 'class/'.$class.'.php';
 	});
 
-	if(!is_null(SESSION::getUserID())){
-		header('Location: dashboard.php');
-	}else{
+	if(is_null(SESSION::getUserID())){
 		header('Location: login.php');
+	}else{
+		include 'view/music-add.php';
 	}

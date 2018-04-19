@@ -1,6 +1,14 @@
+<?php
+	$musics = MUSIC::getList();
+	include 'includes/header.php';
+?>
+
+
 <body>
-	<?php include '_topbar.php'; ?>
+	<?php include 'includes/topbar.php'; ?>
 	<div class="container">
+		<?php include 'includes/alert.php'; ?>
+	
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div id="musicfeed">
@@ -18,20 +26,17 @@
 								<div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
 									<div class="pull-right">
 										<ul class="list-inline actionicon">
-										<?php
-                                        echo '<li><span class="badge badge-primary">Like</span></li>';
-                                        if(MUSIC::isOwn($music['id'])){
-											echo '<li><a href="edit.php?id='.$music['id'].'&&user_id='.$music['user_id'].'"><i class="fa fa-pencil"></i></a></li>';
-											echo '<li><a href="delete.php?id='.$music['id'].'"><i class="fa fa-times"></i></a></li>';
-										} ?>
+										<li><span class="badge badge-primary"><?php echo $music['nbr-likes']; ?> like<?php if($music['nbr-likes'] > 1){ ?>s<?php } ?></span></li>
+                                        <li><span class="badge badge-primary"><?php echo $music['nbr-comments']; ?> commentaire<?php if($music['nbr-comments'] > 1){ ?>s<?php } ?></span></li>
+										<?php if(MUSIC::isOwn($music['user']['id'])){ ?>
+											<li><a href="music-edit.php?id=<?php echo $music['id']; ?>"><i class="fa fa-pencil"></i></a></li>
+											<li><a href="request/musics/delete.php?id=<?php echo $music['id']; ?>"><i class="fa fa-times"></i></a></li>
+										<?php } ?>
 										</ul>
 									</div>
 									<b class="username">Posté par <?php echo $music['user']['username']; ?></b>
                                     <a href="<?php echo "music.php?id=".$music['id'];?>">
-                                    <h3 class="title">
-
-										<?php echo $music['title']; ?>
-									</h3>
+										<h3 class="title"><?php echo $music['title']; ?></h3>
                                     </a>
 									<p class="clearfix">
 										<small class="date pull-right"><i class="fa fa-clock-o"></i> <?php echo $music['created_at']; ?></small>
@@ -46,5 +51,6 @@
 		</div>
 	</div>
 </body>
+<?php include 'includes/footer.php'; ?>
 
 

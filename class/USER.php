@@ -33,8 +33,7 @@ class USER{
 		
 		$password = Transform::password($password);
 		
-		BDD::query('insert into `users` (`username`,`email`,`pasword`) value("'.Transform::mysqlString($username).'","'.Transform::mysqlString($email).'","'.Transform::mysqlString($password).'")');
-	
+		BDD::query('insert into `users` (`username`,`email`,`password`) value("'.Transform::mysqlString($username).'","'.Transform::mysqlString($email).'","'.Transform::mysqlString($password).'")');
 		return null;
 	}
 	

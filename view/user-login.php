@@ -1,15 +1,35 @@
+<?php include 'includes/header.php'; ?>
+
 <body style="background-color: #333;">
 	<section id="login-container">
 		<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 midway-horizontal midway-vertical fadeInDown animated">
 			<div id="logbox">
-			<?php if(isset($error) && !empty($error)){ ?>
+			
+			
+				<?php include 'includes/alert.php'; ?>
+			<?php 
+				$error = SESSION::getError();
+				if(!is_null($error)){ 
+			?>
 				<div class="alert alert-danger alert-dismissable">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 					<?php echo $error; ?>
 				</div>
-			<?php } ?>
+			<?php 
+				}else{
+					$succes = SESSION::getSucces();
+					if(!is_null($succes)){ 
+				?>
+					<div class="alert alert-success alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<?php echo $succes; ?>
+					</div>
+				<?php
+					}
+				} 
+				?>
 				<h1><i class="fa fa-soundcloud"></i> Connectez-vous !</h1>
-				<form method="POST" action="login.php">
+				<form method="POST" action="request/users/login.php">
 					<div class="form-input">
 						<span class="email">
 							<input type="text" name="email" placeholder="Email">
@@ -28,3 +48,4 @@
 			</div>
 		</div>
 	</section>
+	<?php include 'includes/footer.php'; ?>

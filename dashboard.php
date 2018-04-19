@@ -1,20 +1,11 @@
 <?php
-session_start();
-require('config/config.php');
-require('model/functions.fn.php');
 
-/*===============================
-	Dashboard
-===============================*/
+	spl_autoload_register(function($class){
+		require_once 'class/'.$class.'.php';
+	});
 
- if(!isset($_SESSION) OR empty($_SESSION)){
-	header('Location: login.php');
-	exit();
-}
-
-$musics = MUSIC::GetList();
-
-
-include 'view/_header.php';
-include 'view/dashboard.php';
-include 'view/_footer.php';
+	if(is_null(SESSION::getUserID())){
+		header('Location: login.php');
+	}else{
+		include 'view/main.php';
+	}

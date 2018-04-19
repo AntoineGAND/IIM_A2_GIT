@@ -1,5 +1,6 @@
+<?php include 'includes/header.php';?>
 <body>
-	<?php include '_topbar.php'; ?>
+	<?php include 'includes/topbar.php';?>
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -8,16 +9,8 @@
 					<div class="block animated fadeInDown">
 						<div class="row">
 							<div class="col-xs-10 col-sm-10 col-md-11 col-lg-11">
-								<?php
-								if(isset($error) && !empty($error)){
-									echo '
-									<div class="alert alert-danger alert-dismissable">
-										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-										'.$error.'
-									</div>';
-								}
-								?>
-								<form action="add_music.php" method="POST" enctype="multipart/form-data">
+								<?php include 'includes/alert.php';?>
+								<form action="request/musics/add.php" method="POST" enctype="multipart/form-data">
 									<div class="form-group">
 										<label for="title">Titre</label>
 										<input type="text" name="title" class="form-control">
@@ -39,6 +32,4 @@
 			</div>
 		</div>
 	</div>
-<?php
-include '_footer.php';
-?>
+<?php include 'includes/footer.php';?>

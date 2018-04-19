@@ -11,7 +11,7 @@
 		$max = count($get);
 		while($i < $max){
 			switch(trim($get[$i])){
-				case 'user':
+				case 'users':
 					$array = [];
 					
 					if (Verify::get(['email' => 'string'])){
@@ -24,7 +24,22 @@
 						$array['username'] = $_GET['username'];
 					}
 					
-					$data = User::json(User::getUser($array));
+					if (count($array) > 0){
+						$data = User::json(User::get($array));
+					}else{
+						$data = [];
+						
+						$users = User::getList($array);
+						
+						$i=0;
+						$max = count($users);
+						while($i < $max){
+							
+							$data[] = User::json($users[$i]);
+							
+							$i++;
+						}
+					}
 				break;
 			}
 			
