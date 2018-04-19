@@ -189,6 +189,62 @@
 			}
 		}
 		
+		public static function get_likes($id){
+			if (is_numeric($id)){
+				$req = BDD::query('select `musics_like`.`id_user`,`musics_like`.`time`,`musics_like`.`id_user`,`users`.`username`,`users`.`email` from `musics_like` left join `users` on `users`.`id`=`musics_like`.`id_user` where `id_music`='.$id.' order by `time` desc limit 30',true);
+				$return = [];
+				
+				$i = 0;
+				$max = count($req);
+				while($i < $max){
+					$return[] = [
+						'time' => $req[$i]['time'],
+						'user' => [
+							'username' => $req[$i]['username'],
+							'email' => $req[$i]['email'],
+							'id' => $req[$i]['id_user'],
+						],
+					];
+					$i++;
+				}
+				
+				return $return;
+			}else{
+				$return = [];
+				
+				$i = 0;
+				$max = count($id);
+				
+				if (count($max) > 0){
+					$i = 0;
+					while($i < $max){
+						$return[$id[$i]] = [];
+						$i++;
+					}
+					
+					$req = BDD::query('select `musics_comment`.`id_music`,`musics_comment`.`id_user`,`musics_comment`.`comment`,`musics_comment`.`time`,`users`.`id` as `id_user`,`users`.`username`,`users`.`email` from `musics_comment` left join `users` on `users`.`id`=`musics_comment`.`id_user` where '.BDD::getOperation('id_music','=',$id).' order by `time` desc limit 30',true);
+					
+					$i = 0;
+					$max = count($req);
+					while($i < $max){
+						$return[$req[$i]['id_music']][] = [
+							'time' => $req[$i]['time'],
+							'comment' => $req[$i]['comment'],
+							'user' => [
+								'username' => $req[$i]['username'],
+								'email' => $req[$i]['email'],
+								'id' => $req[$i]['id_user'],
+							],
+						];
+						$i++;
+					}
+					
+				}
+				
+				return $return;
+			}
+		}
+		
 		public static function get_comment($id){
 			
 			if (is_numeric($id)){
@@ -216,9 +272,31 @@
 				
 				$i = 0;
 				$max = count($id);
-				while($i < $max){
-					$return[$id[$i]] = [];
-					$i++;
+				
+				if (count($max) > 0){
+					$i = 0;
+					while($i < $max){
+						$return[$id[$i]] = [];
+						$i++;
+					}
+					
+					$req = BDD::query('select `musics_comment`.`id_music`,`musics_comment`.`id_user`,`musics_comment`.`comment`,`musics_comment`.`time`,`users`.`id` as `id_user`,`users`.`username`,`users`.`email` from `musics_comment` left join `users` on `users`.`id`=`musics_comment`.`id_user` where '.BDD::getOperation('id_music','=',$id).' order by `time` desc limit 30',true);
+					
+					$i = 0;
+					$max = count($req);
+					while($i < $max){
+						$return[$req[$i]['id_music']][] = [
+							'time' => $req[$i]['time'],
+							'comment' => $req[$i]['comment'],
+							'user' => [
+								'username' => $req[$i]['username'],
+								'email' => $req[$i]['email'],
+								'id' => $req[$i]['id_user'],
+							],
+						];
+						$i++;
+					}
+					
 				}
 				
 				return $return;
@@ -262,7 +340,48 @@
 				$i++;
 			}
 			
+			$comments = self::get_comment($ids);
+			$likes = self::get_likes($ids);
+			$return = [];
+			$i = 0;
+			while($i < $max){
+				$return[$i] = [
+					'user' => [
+						'username' => $req[$i]['username'],
+						'id' => $req[$i]['user_id'],
+						'avatar' => USER::getAvatar($req[$i]['user_id']),
+					],
+					'file' => MUSIC::getFile($req[$i]['id']),
+					'id' => $req[$i]['id'],
+					'nbr-likes' => $req[$i]['nbr-likes'],
+					'nbr-comments' => $req[$i]['nbr-comment'],
+					'comments' => $comments[$req[$i]['id']],
+					'likes' => $likes[$req[$i]['id']],
+					'title' => $req[$i]['title'],
+					'created_at' => $req[$i]['created_at'],
+				];
+				
+				$i++;
+			}
+		
+			return $return;
+		}
+		
+		public static function dashboard(){
+			$req = BDD::query('SELECT count(musics_like.id_user) as `nbr-likes`,count(musics_comment.id_user) as `nbr-comment`,musics.*, users.id AS user_id, users.username FROM musics LEFT JOIN users ON musics.user_id = users.id left join `musics_comment` on `musics_comment`.`id_music`=`musics`.`id` left join `musics_like` on `musics_like`.`id_music`=`musics`.`id` ORDER BY musics.created_at DESC limit 30',true);
+		
+			$ids = [];
+			
+			$i = 0;
+			$max = count($req);
+			
+			while($i < $max){
+				$ids[] = $req[$i]['id'];
+				$i++;
+			}
+			
 			$liked = self::isLiked($ids);
+
 			$return = [];
 			$i = 0;
 			while($i < $max){
@@ -285,5 +404,22 @@
 			}
 		
 			return $return;
+		}
+		
+		public static function json($array){
+			return [
+				'file' => $array['file'],
+				'user' => $array['user'],
+				'id' => $array['id'],
+				'title' => $array['title'],
+				'created_at' => $array['created_at'],
+				'comments' => [
+					'count' => $array['nbr-comments'],
+					'data' => $array['comments'],
+				],
+				'likes' => [
+					'count' => $array['nbr-likes'],	
+				]
+			];
 		}
 	}

@@ -17,8 +17,8 @@
 					if (Verify::get(['email' => 'string'])){
 						$array['email'] = $_GET['email'];
 					}
-					if (Verify::get(['id' => 'string'])){
-						$array['id'] = $_GET['id'];
+					if (Verify::get(['id_user' => 'int'])){
+						$array['id'] = $_GET['id_user'];
 					}
 					if (Verify::get(['username' => 'string'])){
 						$array['username'] = $_GET['username'];
@@ -29,13 +29,33 @@
 					}else{
 						$data = [];
 						
-						$users = User::getList($array);
+						$users = User::getList();
 						
 						$i=0;
 						$max = count($users);
 						while($i < $max){
 							
 							$data[] = User::json($users[$i]);
+							
+							$i++;
+						}
+					}
+				break;
+				case 'musics':
+					$array = [];
+					
+					if (Verify::get(['id_music' => 'int'])){
+						$data = MUSIC::json(MUSIC::get($_GET['id']));
+					}else{
+						$data = [];
+						
+						$users = MUSIC::getList();
+						
+						$i=0;
+						$max = count($users);
+						while($i < $max){
+							
+							$data[] = MUSIC::json($users[$i]);
 							
 							$i++;
 						}

@@ -1,5 +1,5 @@
 <?php
-	$musics = MUSIC::getList();
+	$musics = MUSIC::dashboard();
 	include 'includes/header.php';
 ?>
 
